@@ -2,12 +2,16 @@ package com.thaiduong.passwordgenerator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -24,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
     Random random = new Random();
 
+    private Boolean passwordGenerated;
+    private String password = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         specialCharacterCheckBox = findViewById(R.id.specialCharacterCheckBox);
 
         passwordTextView = findViewById(R.id.password);
+
+        passwordGenerated = false;
     }
 
     public void onGenerateButtonClicked(View view)
@@ -46,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
     private String GeneratePassword()
     {
-        String password = "";
         String passwordBase = "";
 
         StringBuilder passwordStringBuilder = new StringBuilder(password);
@@ -79,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (lowercaseCheckBox.isChecked() || uppercaseCheckBox.isChecked() || numberCheckBox.isChecked() || specialCharacterCheckBox.isChecked())
         {
+            password = "";
             if (lowercaseCheckBox.isChecked())
             {
                 passwordBase += lowercaseLetters;
@@ -100,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
             {
                 password += passwordBase.charAt(random.nextInt(passwordBase.length()));
             }
+            passwordGenerated = true;
         }
 
         return password;
@@ -114,6 +124,22 @@ public class MainActivity extends AppCompatActivity {
             else
         {
             return Integer.parseInt(editText.getText().toString());
+        }
+    }
+
+    public void onCopyButtonPressed(View view)
+    {
+        if (!passwordGenerated)
+        {
+            Toast.makeText(getApplicationContext(), "Password not generated yet!", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clipData = ClipData.newPlainText(password, password);
+
+            clipboardManager.setPrimaryClip(clipData);
+            Toast.makeText(getApplicationContext(), "Password copied", Toast.LENGTH_SHORT).show();
         }
     }
 }

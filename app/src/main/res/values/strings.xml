@@ -11,4 +11,6 @@
 
     <string name="generate_button">Generate Password</string>
     <string name="initial_password">PASSWORD</string>
+
+    <string name="copy_button">Copy</string>
 </resources>
