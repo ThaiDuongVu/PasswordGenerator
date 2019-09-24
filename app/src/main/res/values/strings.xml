@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Password Generator</string>
+
+    <string name="length_question">Password length: </string>
+    <string name="password_length">password length</string>
+
+    <string name="lower_case_question">Lowercase letters</string>
+    <string name="upper_case_question">Uppercase letters</string>
+    <string name="number_question">Numbers</string>
+    <string name="special_characters_question">Special characters</string>
+
+    <string name="generate_button">Generate Password</string>
+    <string name="initial_password">PASSWORD</string>
+</resources>
