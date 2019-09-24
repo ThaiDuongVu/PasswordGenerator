@@ -9,6 +9,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText lengthInput;
@@ -19,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox specialCharacterCheckBox;
 
     private TextView passwordTextView;
+
+    Random random = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
         String password = "";
         String passwordBase = "";
 
+        StringBuilder passwordStringBuilder = new StringBuilder(password);
+        StringBuilder passwordBaseStringBuilder = new StringBuilder(passwordBase);
+
         int passwordLength = getNumber(lengthInput);
 
         String lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
@@ -70,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         {
             password = "Please check at least one box above!";
         }
-        else
+        if (lowercaseCheckBox.isChecked() || uppercaseCheckBox.isChecked() || numberCheckBox.isChecked() || specialCharacterCheckBox.isChecked())
         {
             if (lowercaseCheckBox.isChecked())
             {
@@ -87,6 +94,11 @@ public class MainActivity extends AppCompatActivity {
             if (specialCharacterCheckBox.isChecked())
             {
                 passwordBase += specialCharacters;
+            }
+
+            for (int i = 0; i < passwordLength; i++)
+            {
+                password += passwordBase.charAt(random.nextInt(passwordBase.length()));
             }
         }
 
