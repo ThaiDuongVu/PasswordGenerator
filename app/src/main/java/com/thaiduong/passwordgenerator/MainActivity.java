@@ -3,6 +3,7 @@ package com.thaiduong.passwordgenerator;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         String password = "";
         String passwordBase = "";
 
-        int passwordLength = Integer.parseInt(lengthInput.getText().toString());
+        int passwordLength = getNumber(lengthInput);
 
         String lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
         String uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -52,6 +53,55 @@ public class MainActivity extends AppCompatActivity {
         String numbers = "1234567890";
         String specialCharacters = "~!@#$%^&*()[]{};:<>,.?/|+-";
 
+        if (passwordLength < 0)
+        {
+            password = "Password length cannot be negative!";
+        }
+        if (passwordLength == 0)
+        {
+            password = "Password length cannot be zero!";
+        }
+        if (passwordLength > 30)
+        {
+            password = "Password cannot be longer that 30 characters!";
+        }
+
+        if (!lowercaseCheckBox.isChecked() && !uppercaseCheckBox.isChecked() && !numberCheckBox.isChecked() && !specialCharacterCheckBox.isChecked())
+        {
+            password = "Please check at least one box above!";
+        }
+        else
+        {
+            if (lowercaseCheckBox.isChecked())
+            {
+                passwordBase += lowercaseLetters;
+            }
+            if (uppercaseCheckBox.isChecked())
+            {
+                passwordBase += uppercaseLetters;
+            }
+            if (numberCheckBox.isChecked())
+            {
+                passwordBase += numbers;
+            }
+            if (specialCharacterCheckBox.isChecked())
+            {
+                passwordBase += specialCharacters;
+            }
+        }
+
         return password;
+    }
+
+    private int getNumber(EditText editText)
+    {
+        if (TextUtils.isEmpty(editText.getText()))
+        {
+            return 0;
+        }
+            else
+        {
+            return Integer.parseInt(editText.getText().toString());
+        }
     }
 }
