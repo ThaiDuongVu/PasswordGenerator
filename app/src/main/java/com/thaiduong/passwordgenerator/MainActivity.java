@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
@@ -13,11 +14,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.MessageFormat;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
     Random random = new Random();
+
     private EditText lengthInput;
     private CheckBox lowercaseCheckBox;
     private CheckBox uppercaseCheckBox;
@@ -26,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView passwordTextView;
     private Boolean passwordGenerated;
     private String password = "";
+
+    private Vibrator vibrator;
+    private int vibratingDuration = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +48,12 @@ public class MainActivity extends AppCompatActivity {
         passwordTextView = findViewById(R.id.password);
 
         passwordGenerated = false;
+
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     public void onGenerateButtonClicked(View view) {
+        vibrator.vibrate(vibratingDuration);
         passwordTextView.setText(GeneratePassword());
     }
 
@@ -88,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             for (int i = 0; i < passwordLength; i++) {
-                password += passwordBase.charAt(random.nextInt(passwordBase.length()));
+                password = MessageFormat.format("{0}{1}", password, passwordBase.charAt(random.nextInt(passwordBase.length())));
             }
             passwordGenerated = true;
         }
@@ -105,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onCopyButtonPressed(View view) {
+        vibrator.vibrate(vibratingDuration);
         if (!passwordGenerated) {
             Toast.makeText(this, "Password not generated yet!", Toast.LENGTH_SHORT).show();
         } else {
